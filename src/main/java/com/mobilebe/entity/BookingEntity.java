@@ -28,10 +28,10 @@ public class BookingEntity {
     private boolean is_paid;
     private boolean is_active;
 
-    @OneToOne
-    private RoomDetailEntity roomDetailEntity;
+    @ManyToOne
+    private RoomDetailEntity roomDetail;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private ReservationEntity reservationEntity;
 
     @ManyToOne

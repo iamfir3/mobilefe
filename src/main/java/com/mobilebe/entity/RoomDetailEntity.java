@@ -3,6 +3,8 @@ package com.mobilebe.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -27,6 +29,6 @@ public class RoomDetailEntity {
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 
-    @OneToOne
-    private BookingEntity bookingEntity;
+    @OneToMany(mappedBy = "roomDetail")
+    private List<BookingEntity> bookingEntity;
 }
