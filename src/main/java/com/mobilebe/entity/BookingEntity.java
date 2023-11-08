@@ -33,4 +33,7 @@ public class BookingEntity {
 
     @OneToOne
     private ReservationEntity reservationEntity;
+
+    @ManyToOne
+    private SystemUserEntity user;
 }

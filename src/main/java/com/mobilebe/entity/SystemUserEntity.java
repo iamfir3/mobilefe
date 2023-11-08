@@ -32,4 +32,7 @@ public class SystemUserEntity {
 
     @OneToMany(mappedBy = "user",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<CardDetailEntity> cardDetailEntities;
+
+    @OneToMany(mappedBy = "user",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    private List<BookingEntity> bookingEntities;
 }
