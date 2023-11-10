@@ -16,4 +16,7 @@ public interface SystemUserRepository extends JpaRepository<SystemUserEntity,Lon
     @Query("SELECT u FROM SystemUserEntity u " +
             "WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<SystemUserEntity> searchByUsername(@Param("keyword") String keyword);
+    @Query("SELECT u FROM SystemUserEntity u " +
+            "WHERE LOWER(u.lastName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<SystemUserEntity> searchByLastname(@Param("keyword") String keyword);
 }

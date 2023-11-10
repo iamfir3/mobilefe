@@ -17,7 +17,7 @@ public class ReservationEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Date reservation_date;
+    private String reservation_date;
     private String billing_address;
     private boolean is_canceled;
     private String res_status;

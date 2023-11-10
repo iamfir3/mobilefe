@@ -20,7 +20,7 @@ public class CardDetailEntity {
     private String nameOnCard;
     private String cardType;
     private String cardNum;
-    private Date expiryDate;
+    private String expiryDate;
 
     @ManyToOne
     private SystemUserEntity user;

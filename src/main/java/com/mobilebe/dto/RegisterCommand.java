@@ -29,5 +29,5 @@ public class RegisterCommand {
     private String name_on_card;
     private String card_type;
     private String card_num;
-    private Date expiry_date;
+    private String expiry_date;
 }

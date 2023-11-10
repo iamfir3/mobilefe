@@ -39,6 +39,15 @@ public class AdminController {
         );
     }
 
+    @GetMapping("/searchByLastname")
+    private ResponseEntity<GetAllUserByAdminResponse> searchUserByLastname(@RequestParam("keyword") String keyword){
+        return ResponseEntity.ok(
+                GetAllUserByAdminResponse.builder()
+                        .systemUserEntityList(systemUserRepository.searchByLastname(keyword))
+                        .build()
+        );
+    }
+
     @DeleteMapping("/delete")
     private ResponseEntity<?> deleteUser(@RequestParam("id") Long id){
         systemUserRepository.deleteById(id);
