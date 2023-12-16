@@ -19,8 +19,8 @@ public class BookingEntity {
     private int num_of_rooms;
     private int num_of_adults;
     private int num_of_children;
-    private String check_in_date;
-    private String check_out_date;
+    private Date check_in_date;
+    private Date check_out_date;
     private int num_of_days;
     private int total_price;
     private int tax;

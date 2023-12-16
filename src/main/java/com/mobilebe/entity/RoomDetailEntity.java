@@ -1,5 +1,6 @@
 package com.mobilebe.entity;
 
+import com.mobilebe.dto.RoomStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +24,8 @@ public class RoomDetailEntity {
     private int room_price;
     private String room_desciption;
     private int number_of_beds;
-    private String room_status;
+    @Enumerated(EnumType.STRING)
+    private RoomStatus room_status;
 
     @ManyToOne
     @JoinColumn(name = "hotelId")
