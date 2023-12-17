@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,11 +42,14 @@ public class RoomController
     private SystemUserRepository systemUserRepository;
 
     @GetMapping
-    private ResponseEntity<?> getAllRoom(@RequestParam("startDate")Date startDate, @RequestParam("endDate") Date endDate, @RequestParam("status")RoomStatus status){
+    private ResponseEntity<?> getAllRoom(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("status")RoomStatus status) throws ParseException {
         List<RoomDTO> returnValue=new ArrayList<>();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date parsedStartDate = dateFormat.parse(startDate);
+        Date parsedEndDate = dateFormat.parse(endDate);
         if(status.equals(RoomStatus.AVAILABLE)){
-            List<RoomDetailEntity> roomDetails=roomRepository.findAvailableRooms(startDate,endDate);
+            List<RoomDetailEntity> roomDetails=roomRepository.findAvailableRooms(parsedStartDate,parsedEndDate);
             roomDetails.forEach(roomDetailEntity -> {
                 RoomDTO roomDTO= RoomDTO.builder()
                         .id(roomDetailEntity.getId())
@@ -59,7 +64,7 @@ public class RoomController
                 returnValue.add(roomDTO);
             });
         } else if(status.equals(RoomStatus.BOOKED)){
-            List<BookingEntity> bookingEntities=bookingRepository.findBookingsInDateRange(startDate,endDate);
+            List<BookingEntity> bookingEntities=bookingRepository.findBookingsInDateRange(parsedStartDate,parsedEndDate);
             bookingEntities.forEach(bookingEntity -> {
                 RoomDTO roomDTO=RoomDTO.builder()
                         .id(bookingEntity.getRoomDetail().getId())
