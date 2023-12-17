@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,8 @@ public class BookingController {
     }
 
     @GetMapping("/getHistory")
-    private ResponseEntity<?> getHistory(@RequestParam Long userId){
-        List<BookingEntity> bookingEntities=bookingRepository.findAllByUserId(userId);
+    private ResponseEntity<?> getHistory(@RequestParam Long userId, @RequestParam Date startDate,@RequestParam Date endDate){
+        List<BookingEntity> bookingEntities=bookingRepository.findAllByUserId(userId,startDate,endDate);
         List<BookingDTO> returnValue=bookingEntities.stream().map(bookingEntity -> {
             BookingDTO bookingDTO=new BookingDTO();
             BeanUtils.copyProperties(bookingEntity,bookingDTO);

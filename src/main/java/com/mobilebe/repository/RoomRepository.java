@@ -15,5 +15,6 @@ public interface RoomRepository extends JpaRepository<RoomDetailEntity,Long> {
             "(SELECT b.id FROM BookingEntity b WHERE b.check_in_date <= :endDate AND b.check_out_date >= :startDate)")
     List<RoomDetailEntity> findAvailableRooms(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    RoomDetailEntity findByRoom_number(String roomNumber);
+    @Query("SELECT  r from RoomDetailEntity  r where r.room_number=:rn")
+    RoomDetailEntity findByRoom_number(@Param("rn") String roomNumber);
 }
