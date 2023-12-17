@@ -26,7 +26,7 @@ public class RoomDetailEntity {
     private int number_of_beds;
     @Enumerated(EnumType.STRING)
     private RoomStatus room_status;
-
+//sos
     @ManyToOne
     private SystemUserEntity createdBy;
 
