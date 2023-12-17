@@ -27,8 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("room")
-public class RoomController
-{
+public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
 
@@ -42,16 +41,16 @@ public class RoomController
     private SystemUserRepository systemUserRepository;
 
     @GetMapping
-    private ResponseEntity<?> getAllRoom(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("status")RoomStatus status) throws ParseException {
-        List<RoomDTO> returnValue=new ArrayList<>();
+    private ResponseEntity<?> getAllRoom(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("status") RoomStatus status) throws ParseException {
+        List<RoomDTO> returnValue = new ArrayList<>();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date parsedStartDate = dateFormat.parse(startDate);
         Date parsedEndDate = dateFormat.parse(endDate);
-        if(status.equals(RoomStatus.AVAILABLE)){
-            List<RoomDetailEntity> roomDetails=roomRepository.findAvailableRooms(parsedStartDate,parsedEndDate);
+        if (status.equals(RoomStatus.AVAILABLE)) {
+            List<RoomDetailEntity> roomDetails = roomRepository.findAvailableRooms(parsedStartDate, parsedEndDate);
             roomDetails.forEach(roomDetailEntity -> {
-                RoomDTO roomDTO= RoomDTO.builder()
+                RoomDTO roomDTO = RoomDTO.builder()
                         .id(roomDetailEntity.getId())
                         .room_price(roomDetailEntity.getRoom_price())
                         .room_number(roomDetailEntity.getRoom_number())
@@ -63,10 +62,10 @@ public class RoomController
                         .build();
                 returnValue.add(roomDTO);
             });
-        } else if(status.equals(RoomStatus.BOOKED)){
-            List<BookingEntity> bookingEntities=bookingRepository.findBookingsInDateRange(parsedStartDate,parsedEndDate);
+        } else if (status.equals(RoomStatus.BOOKED)) {
+            List<BookingEntity> bookingEntities = bookingRepository.findBookingsInDateRange(parsedStartDate, parsedEndDate);
             bookingEntities.forEach(bookingEntity -> {
-                RoomDTO roomDTO=RoomDTO.builder()
+                RoomDTO roomDTO = RoomDTO.builder()
                         .id(bookingEntity.getRoomDetail().getId())
                         .room_price(bookingEntity.getRoomDetail().getRoom_price())
                         .room_number(bookingEntity.getRoomDetail().getRoom_number())
@@ -81,34 +80,35 @@ public class RoomController
         }
         return ResponseEntity.ok(returnValue);
     }
+
     @GetMapping("/getByRoomnumber")
     private ResponseEntity<?> getByRoomnumber(@RequestParam("roomNumber") String roomNumber) throws ParseException {
-            BookingEntity bookingEntity=roomRepository.findAllByRoomNumber(roomNumber);
-                RoomDTO roomDTO=RoomDTO.builder()
-                        .id(bookingEntity.getRoomDetail().getId())
-                        .room_price(bookingEntity.getRoomDetail().getRoom_price())
-                        .room_number(bookingEntity.getRoomDetail().getRoom_number())
-                        .room_floor(bookingEntity.getRoomDetail().getRoom_floor())
-                        .room_type(bookingEntity.getRoomDetail().getRoom_type())
-                        .room_desciption(bookingEntity.getRoomDetail().getRoom_desciption())
-                        .number_of_beds(bookingEntity.getRoomDetail().getNumber_of_beds())
-                        .room_price(bookingEntity.getRoomDetail().getRoom_price())
-                        .build();
+        RoomDetailEntity bookingEntity = roomRepository.findAllByRoomNumber(roomNumber);
+        RoomDTO roomDTO = RoomDTO.builder()
+                .id(bookingEntity.getId())
+                .room_price(bookingEntity.getRoom_price())
+                .room_number(bookingEntity.getRoom_number())
+                .room_floor(bookingEntity.getRoom_floor())
+                .room_type(bookingEntity.getRoom_type())
+                .room_desciption(bookingEntity.getRoom_desciption())
+                .number_of_beds(bookingEntity.getNumber_of_beds())
+                .room_price(bookingEntity.getRoom_price())
+                .build();
 
 
         return ResponseEntity.ok(roomDTO);
     }
 
     @PostMapping
-    private ResponseEntity<?> addRoom(@RequestBody RoomDTO roomDTO){
-        RoomDetailEntity check=roomRepository.findByRoom_number(roomDTO.getRoom_number());
-        if(check!=null){
-            throw new ApiException(HttpStatus.BAD_REQUEST,"Existed room number!");
+    private ResponseEntity<?> addRoom(@RequestBody RoomDTO roomDTO) {
+        RoomDetailEntity check = roomRepository.findByRoom_number(roomDTO.getRoom_number());
+        if (check != null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Existed room number!");
         }
-        Hotel hotel=hotelRepository.findById(1L).get();
-        RoomDetailEntity roomDetail=new RoomDetailEntity();
-        BeanUtils.copyProperties(roomDTO,roomDetail);
-        SystemUserEntity systemUserEntity=systemUserRepository.findByUsername(roomDTO.getUsername()).get();
+        Hotel hotel = hotelRepository.findById(1L).get();
+        RoomDetailEntity roomDetail = new RoomDetailEntity();
+        BeanUtils.copyProperties(roomDTO, roomDetail);
+        SystemUserEntity systemUserEntity = systemUserRepository.findByUsername(roomDTO.getUsername()).get();
         roomDetail.setCreatedBy(systemUserEntity);
         roomDetail.setHotel(hotel);
         roomDetail.setRoom_status(RoomStatus.AVAILABLE);

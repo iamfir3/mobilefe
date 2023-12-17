@@ -20,6 +20,6 @@ public interface RoomRepository extends JpaRepository<RoomDetailEntity,Long> {
     RoomDetailEntity findByRoom_number(@Param("rn") String roomNumber);
 
     @Query("SELECT b from RoomDetailEntity b where b.room_number=:roomNumber")
-    BookingEntity findAllByRoomNumber(@Param("roomNumber") String roomNumber);
+    RoomDetailEntity findAllByRoomNumber(@Param("roomNumber") String roomNumber);
 
 }
