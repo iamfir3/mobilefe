@@ -64,4 +64,6 @@ public class BookingController {
             return ResponseEntity.badRequest().body("Invalid date format. Please use yyyy-MM-dd.");
         }
     }
+
+
 }

@@ -81,6 +81,23 @@ public class RoomController
         }
         return ResponseEntity.ok(returnValue);
     }
+    @GetMapping("/getByRoomnumber")
+    private ResponseEntity<?> getByRoomnumber(@RequestParam("roomNumber") String roomNumber) throws ParseException {
+            BookingEntity bookingEntity=roomRepository.findAllByRoomNumber(roomNumber);
+                RoomDTO roomDTO=RoomDTO.builder()
+                        .id(bookingEntity.getRoomDetail().getId())
+                        .room_price(bookingEntity.getRoomDetail().getRoom_price())
+                        .room_number(bookingEntity.getRoomDetail().getRoom_number())
+                        .room_floor(bookingEntity.getRoomDetail().getRoom_floor())
+                        .room_type(bookingEntity.getRoomDetail().getRoom_type())
+                        .room_desciption(bookingEntity.getRoomDetail().getRoom_desciption())
+                        .number_of_beds(bookingEntity.getRoomDetail().getNumber_of_beds())
+                        .room_price(bookingEntity.getRoomDetail().getRoom_price())
+                        .build();
+
+
+        return ResponseEntity.ok(roomDTO);
+    }
 
     @PostMapping
     private ResponseEntity<?> addRoom(@RequestBody RoomDTO roomDTO){

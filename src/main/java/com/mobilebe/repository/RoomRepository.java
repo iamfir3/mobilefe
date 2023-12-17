@@ -1,5 +1,6 @@
 package com.mobilebe.repository;
 
+import com.mobilebe.entity.BookingEntity;
 import com.mobilebe.entity.RoomDetailEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,7 @@ public interface RoomRepository extends JpaRepository<RoomDetailEntity,Long> {
 
     @Query("SELECT  r from RoomDetailEntity  r where r.room_number=:rn")
     RoomDetailEntity findByRoom_number(@Param("rn") String roomNumber);
+
+    @Query("SELECT b from RoomDetailEntity b where b.room_number=:roomNumber")
+    BookingEntity findAllByRoomNumber(@Param("roomNumber") String roomNumber);
 }
