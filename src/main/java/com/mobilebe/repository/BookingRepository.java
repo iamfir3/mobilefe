@@ -18,7 +18,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity,Long> {
 
     List<BookingEntity> findAllByUserId(@Param("userId") Long userId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query("SELECT b FROM RoomDetailEntity b WHERE b.room_number=:userId ")
+    @Query("SELECT b FROM RoomDetailEntity b WHERE b.room_number=:roomNumber ")
 
     List<BookingEntity> findAllByRoomNumber(@Param("roomNumber") String roomNumber);
 }
