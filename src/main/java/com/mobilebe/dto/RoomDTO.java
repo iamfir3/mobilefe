@@ -21,6 +21,8 @@ public class RoomDTO {
     private int room_price;
     private String room_desciption;
     private int number_of_beds;
-    private String room_status;
+    private RoomStatus room_status;
+
+    private String username;
 
 }

@@ -10,10 +10,10 @@ import com.mobilebe.repository.SystemUserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("booking")
@@ -33,7 +33,19 @@ public class BookingController {
         SystemUserEntity user=systemUserRepository.findById(bookingDTO.getUserId()).get();
         bookingEntity.setRoomDetail(roomDetail);
         bookingEntity.setUser(user);
+        bookingEntity.set_paid(false);
         bookingRepository.save(bookingEntity);
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/getHistory")
+    private ResponseEntity<?> getHistory(@RequestParam Long userId){
+        List<BookingEntity> bookingEntities=bookingRepository.findAllByUserId(userId);
+        List<BookingDTO> returnValue=bookingEntities.stream().map(bookingEntity -> {
+            BookingDTO bookingDTO=new BookingDTO();
+            BeanUtils.copyProperties(bookingEntity,bookingDTO);
+            return bookingDTO;
+        }).toList();
+        return ResponseEntity.ok(returnValue);
     }
 }

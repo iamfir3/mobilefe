@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum RoomStatus {
-    AVAILABLE,BOOKED,REPAIR
+    AVAILABLE,BOOKED
 }

@@ -43,6 +43,7 @@ public class AuthController {
                         .firstName(systemUserEntity.get().getFirstName())
                         .lastName(systemUserEntity.get().getLastName())
                         .role(systemUserEntity.get().getRole())
+                        .id(systemUserEntity.get().getId())
                 .build());
     }
 

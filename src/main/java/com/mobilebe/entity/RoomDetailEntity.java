@@ -28,6 +28,9 @@ public class RoomDetailEntity {
     private RoomStatus room_status;
 
     @ManyToOne
+    private SystemUserEntity createdBy;
+
+    @ManyToOne
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 

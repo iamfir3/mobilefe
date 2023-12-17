@@ -35,4 +35,7 @@ public class SystemUserEntity {
 
     @OneToMany(mappedBy = "user",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<BookingEntity> bookingEntities;
+
+    @OneToMany(mappedBy = "createdBy")
+    private List<RoomDetailEntity> createdRoom;
 }

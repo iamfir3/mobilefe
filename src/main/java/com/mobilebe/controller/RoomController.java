@@ -3,10 +3,17 @@ package com.mobilebe.controller;
 import com.mobilebe.dto.RoomDTO;
 import com.mobilebe.dto.RoomStatus;
 import com.mobilebe.entity.BookingEntity;
+import com.mobilebe.entity.Hotel;
 import com.mobilebe.entity.RoomDetailEntity;
+import com.mobilebe.entity.SystemUserEntity;
+import com.mobilebe.exception.ApiException;
 import com.mobilebe.repository.BookingRepository;
+import com.mobilebe.repository.HotelRepository;
 import com.mobilebe.repository.RoomRepository;
+import com.mobilebe.repository.SystemUserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +31,12 @@ public class RoomController
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private HotelRepository hotelRepository;
+
+    @Autowired
+    private SystemUserRepository systemUserRepository;
 
     @GetMapping
     private ResponseEntity<?> getAllRoom(@RequestParam("startDate")Date startDate, @RequestParam("endDate") Date endDate, @RequestParam("status")RoomStatus status){
@@ -61,5 +74,22 @@ public class RoomController
             });
         }
         return ResponseEntity.ok(returnValue);
+    }
+
+    @PostMapping
+    private ResponseEntity<?> addRoom(@RequestBody RoomDTO roomDTO){
+        RoomDetailEntity check=roomRepository.findByRoom_number(roomDTO.getRoom_number());
+        if(check!=null){
+            throw new ApiException(HttpStatus.BAD_REQUEST,"Existed room number!");
+        }
+        Hotel hotel=hotelRepository.findById(1L).get();
+        RoomDetailEntity roomDetail=new RoomDetailEntity();
+        BeanUtils.copyProperties(roomDTO,roomDetail);
+        SystemUserEntity systemUserEntity=systemUserRepository.findByUsername(roomDTO.getUsername()).get();
+        roomDetail.setCreatedBy(systemUserEntity);
+        roomDetail.setHotel(hotel);
+        roomDetail.setRoom_status(RoomStatus.AVAILABLE);
+        roomRepository.save(roomDetail);
+        return ResponseEntity.ok("OK");
     }
 }
