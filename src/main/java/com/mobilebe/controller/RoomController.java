@@ -1,5 +1,6 @@
 package com.mobilebe.controller;
 
+import com.mobilebe.dto.ResponseStatus;
 import com.mobilebe.dto.RoomDTO;
 import com.mobilebe.dto.RoomStatus;
 import com.mobilebe.entity.BookingEntity;
@@ -90,6 +91,6 @@ public class RoomController
         roomDetail.setHotel(hotel);
         roomDetail.setRoom_status(RoomStatus.AVAILABLE);
         roomRepository.save(roomDetail);
-        return ResponseEntity.ok("OK");
+        return ResponseEntity.ok(ResponseStatus.builder().status("OK").build());
     }
 }

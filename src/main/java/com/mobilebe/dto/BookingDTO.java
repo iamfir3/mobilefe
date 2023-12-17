@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class BookingDTO {
     private Long id;
+    private String roomNumber;
     private int num_of_rooms;
     private int num_of_adults;
     private int num_of_children;
